@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Calculadora de Huella de Carbono</title>
+</head>
+<body>
+    <h1>Calculadora de Huella de Carbono</h1>
+
+    <!-- Selección inicial -->
+    <div id="selector-inicial">
+        <p>¿Quién va a calcular su huella de carbono?</p>
+        <button onclick="seleccionarTipo('persona')">Persona</button>
+        <button id="boton-empresa" onclick="seleccionarTipo('empresa')">Empresa</button>
+    </div>
+
+    <!-- Calculadora para Personas -->
+    <div id="form-persona" style="display: none;">
+
+        <!-- Transporte terrestre -->
+        <h2 style="color: red;"> 1. Transporte Terrestre</h2>
+        <p>El transporte terrestre es una fuente significativa de emisiones de carbono. Considera cómo tus
+            desplazamientos diarios en carro, moto o transporte público impactan el medio ambiente.</p>
+        <p>Selecciona tu medio de transporte principal:</p>
+
+        <select id="transporte">
+            <option value="auto_gasolina">Auto particular (gasolina)</option>
+            <option value="auto_diesel">Auto particular (diésel)</option>
+            <option value="auto_hibrido">Auto híbrido/eléctrico</option>
+            <option value="moto">Motocicleta</option>
+            <option value="transporte_publico_autobus">Transporte público (autobús)</option>
+            <option value="transporte_publico_metro">Transporte público (metro)</option>
+            <option value="bicicleta">Bicicleta</option>
+            <option value="a_pie">A pie</option>
+        </select>
+        <p>Horas de uso a la semana:</p>
+        <input type="number" id="horas-transporte" min="1" placeholder="Ingresa horas por semana" />
+
+        <!-- Transporte aéreo -->
+        <h2 style="color: red;"> 2. Transporte Aéreo </h2>
+        <p>Los viajes en avión generan una huella de carbono considerable debido al consumo de
+            combustible. Descubre cómo tus vuelos contribuyen a tu huella personal.</p>
+        <p>Introduce las horas de vuelo para cada tipo:</p>
+        
+        <label for="vuelos-nacionales">Horas de vuelos nacionales (tiempo < 3 h):</label>
+        <input type="number" id="vuelos-nacionales" min="0" placeholder="Horas nacionales" />
+
+        <label for="vuelos-internacionales">Horas de vuelos internacionales (tiempo > 3 h):</label>
+        <input type="number" id="vuelos-internacionales" min="0" placeholder="Horas internacionales" />
+
+        <h2 style=" color: red;"> 3. Energía en el Hogar</h2>
+        <p>La energía que usas en casa proviene de diversas fuentes, algunas más sostenibles que otras. Evalúa el impacto de tu consumo eléctrico y de gas.</p>
+
+        <label for="personas-casa">Cantidad de personas que viven en tu casa:</label>
+        <input type="number" id="personas-casa" min="1" placeholder="Número de personas" />
+
+        <label for="consumo-electricidad">Consumo mensual de electricidad (en kWh):</label>
+        <input type="number" id="consumo-electricidad" min="0" placeholder="Consumo mensual en kWh" />
+
+        <label for="usa-gas">¿Usas gas natural?</label>
+        <select id="usa-gas">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select>
+        <div id="pregunta-gas" style="display: none;">
+            <label for="consumo-gas">Consumo mensual de gas natural (en m³):</label>
+            <input type="number" id="consumo-gas" min="0" placeholder="Consumo mensual en m³" />
+        </div>
+
+        <!-- Consumo alimenticio -->
+        <h2 style="color: red;"> 4. Consumo Alimenticio</h2>
+        <p>La forma en que nos alimentamos también influye en nuestra huella de carbono. Elige opciones
+            que reflejen el impacto ambiental de tus elecciones diarias.</p>
+        <p>Frecuencia de consumo de carne roja:</p>
+
+        <select id="frecuencia-carne">
+            <option value="diario">Diario</option>
+            <option value="2-3_veces_semana">2-3 veces a la semana</option>
+            <option value="1_vez_semana">1 vez a la semana</option>
+            <option value="menos_1_vez_semana">Menos de 1 vez a la semana</option>
+        </select>
+
+        <p>Frecuencia de consumo de lácteos:</p>
+        <select id="frecuencia-lacteos">
+            <option value="diario">Diario</option>
+            <option value="2-3_veces_semana">2-3 veces a la semana</option>
+            <option value="1_vez_semana">1 vez a la semana</option>
+            <option value="menos_1_vez_semana">Menos de 1 vez a la semana</option>
+        </select>
+
+        <p>Frecuencia de consumo de granos y leguminosas:</p>
+        <select id="frecuencia-granos">
+            <option value="diario">Diario</option>
+            <option value="2-3_veces_semana">2-3 veces a la semana</option>
+            <option value="1_vez_semana">1 vez a la semana</option>
+            <option value="menos_1_vez_semana">Menos de 1 vez a la semana</option>
+        </select>
+
+        <!-- Hábitos de compras -->
+        <h2 style="color: red;"> 5. Hábitos de Compras</h2>
+        <p>La producción y el transporte de ropa y electrodomésticos consumen recursos y generan
+            emisiones. Analiza cómo tus hábitos de compra afectan al planeta.</p>
+        <p>Frecuencia de compra de ropa:</p>
+        <select id="frecuencia-ropa">
+            <option value="mensual">Mensual</option>
+            <option value="3-6_meses">Cada 3-6 meses</option>
+            <option value="1_vez_año">1 vez al año</option>
+            <option value="menos_1_vez_año">Menos de una vez al año</option>
+        </select>
+
+        <p>Frecuencia de compra de electrodomésticos:</p>
+        <select id="frecuencia-electrodomesticos">
+            <option value="6_meses">Cada 6 meses</option>
+            <option value="1_vez_año">1 vez al año</option>
+            <option value="2_años">Cada 2 años</option>
+            <option value="menos_1_vez_año">Menos de una vez al año</option>
+        </select>
+
+        <!-- Disposición de residuos -->
+        <h2 style="color: red;"> 6. Disposición de Residuos</h2>
+        <p>Los residuos que generamos y cómo los gestionamos pueden aumentar o reducir nuestra huella
+            de carbono. Reflexiona sobre tus hábitos de reciclaje y desechos.</p>
+            
+        <p>Frecuencia de reciclaje:</p>
+        <select id="frecuencia-reciclaje">
+            <option value="siempre">Siempre</option>
+            <option value="a_menudo">A menudo</option>
+            <option value="a_veces">A veces</option>
+            <option value="nunca">Nunca</option>
+        </select>
+
+        <p>Uso de productos reutilizables:</p>
+        <select id="frecuencia-reutilizables">
+            <option value="siempre">Siempre</option>
+            <option value="a_menudo">A menudo</option>
+            <option value="a_veces">A veces</option>
+            <option value="nunca">Nunca</option>
+        </select>
+
+        <p>Método principal de disposición de residuos:</p>
+        <select id="metodo-residuos">
+            <option value="incineracion">Incineración</option>
+            <option value="vertedero">Vertedero</option>
+            <option value="compostaje">Compostaje</option>
+        </select>
+
+         <!-- Mascotas -->
+        <h2 style="color: red;"> 7. Mascotas</h2>
+        <p>Nuestras mascotas también tienen un impacto ambiental. Calcula su huella junto con la tuya.</p>
+
+        <label for="perros">Cantidad de perros:</label>
+        <input type="number" id="perros" min="0" placeholder="Número de perros" />
+        <label for="gatos">Cantidad de gatos:</label>
+        <input type="number" id="gatos" min="0" placeholder="Número de gatos" />
+        <label for="otros">Cantidad de otras mascotas:</label>
+        <input type="number" id="otros" min="0" placeholder="Número de otras mascotas" />
+
+        <label for="tipo-alimento">Tipo de alimento:</label>
+        <select id="tipo-alimento">
+            <option value="concentrado">Concentrado</option>
+            <option value="humedos">Húmedos</option>
+            <option value="dieta-casera">Dieta casera</option>
+            <option value="sin-mascota">Sin mascota</option>
+        </select>
+        
+
+        <button onclick="calcularHuellaTotal()">Calcular Huella Total</button>
+        <p id="resultado-total"></p>
+
+        <div style="display: flex;justify-content: space-evenly;gap: 20px;" _mstvisible="1">
+            <canvas id="bar-chart" style="max-width: 100%; max-height: 400px; display: block; box-sizing: border-box; height: 200px;" _mstvisible="2" width="500" height="250"></canvas>            
+        </div>
+
+        <div id="contenido-huella" style="display: none">  
+        <h3>¿Qué es la huella ecológica?</h3>
+        <p>La huella ecológica mide la cantidad de recursos naturales que necesitas para mantener tu estilo de vida, como alimentos, energía, materiales y espacio para residuos. Un planeta sostenible requiere que usemos recursos dentro de los límites que la Tierra puede regenerar.</p>
+        
+        <p>Compensar tu huella es un paso importante hacia la sostenibilidad. Conoce nuestros proyectos que protegen ecosistemas clave y apoyan comunidades locales.</p>
+        
+        <a href="https://biofix.co/proyectos/" target="_blank  id="reducir-impacto">Haz clic aquí para comenzar a reducir tu impacto.</a>
+        </div>
+    </div>
+
+
+     </div> 
+        <!-- Calculadora para Empresas -->
+        <div id="form-empresa" style="display: none;">
+        <h2 style="color: red;">Formulario para Empresas</h2>
+    
+        <!-- Información general -->
+        <label for="sector-empresa">Sector de tu empresa:</label>
+        <input type="text" id="sector-empresa" placeholder="Ingrese el sector" />
+        <label for="num-sedes">Número de sedes:</label>
+        <input type="number" id="num-sedes" min="1" placeholder="Ingrese el número de sedes" />
+        <label for="num-colaboradores">Número de colaboradores directos:</label>
+        <input type="number" id="num-colaboradores" min="1" placeholder="Ingrese el número de colaboradores" />
+
+        <!-- Alcance 1: Emisiones Directas -->
+        <h3 style="color: red;">Alcance 1 (Emisiones Directas)</h3>
+        <p>El alcance 1 incluye las emisiones directas generadas por tu empresa, como las provenientes de vehículos propios, equipos que consumen combustible o procesos industriales.</p>
+        
+        <h4>1. Consumo de Combustible en Vehículos Propios</h4>
+        <p>¿Cuánta cantidad de combustible adquieren mensualmente para sus vehículos propios?</p>
+
+        <div id="cantidad-vehiculos">
+        <label for="gasolina-vehiculos">Gasolina (gal):</label>
+        <input type="number" id="gasolina-vehiculos" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="diesel-vehiculos">Diesel (gal):</label>
+        <input type="number" id="diesel-vehiculos" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="glp-vehiculos">Gas Licuado de Petróleo GLP (gal):</label>
+        <input type="number" id="glp-vehiculos" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="gas-natural-vehiculos">Gas Natural (m³):</label>
+        <input type="number" id="gas-natural-vehiculos" min="0" placeholder="Ingrese cantidad"/>  
+        </div>
+
+        <h4>2. Consumo de Combustible en Calderas o Equipos Internos</h4>
+        <p>¿Cuánta cantidad de combustible adquieren mensualmente para utilizar calderas o calentadores?</p>
+
+        <label for="gasolina-calderas">Gasolina (gal):</label>
+        <input type="number" id="gasolina-calderas" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="diesel-calderas">Diesel (gal):</label>
+        <input type="number" id="diesel-calderas" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="glp-calderas">Gas Licuado de Petróleo GLP (gal):</label>
+        <input type="number" id="glp-calderas" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="gas-natural-calderas">Gas Natural (m³):</label>
+        <input type="number" id="gas-natural-calderas" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="carbon-calderas">Carbón (ton):</label>
+        <input type="number" id="carbon-calderas" min="0" placeholder="Ingrese cantidad"/>
+        
+        <h4>3. Refrigerantes</h4>
+        <p>¿Cuántos kg de gases refrigerantes se cargan al año?</p>
+
+        <label for="r22">R-22 (HCFC-22) (kg):</label>
+        <input type="number" id="r22" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="r134a">R-134A (kg):</label>
+        <input type="number" id="r134a" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="r404a">R-404A (kg):</label>
+        <input type="number" id="r404a" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="r410a">R-410A (kg):</label>
+        <input type="number" id="r410a" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="r407c">R-407C (kg):</label>
+        <input type="number" id="r407c" min="0" placeholder="Ingrese cantidad"/>        
+        <label for="r507a">R-507A (kg):</label>
+        <input type="number" id="r507a" min="0" placeholder="Ingrese cantidad"/>
+        
+        <!-- dd -->
+        <h3 style="color: red;">Alcance 2 (Emisones indirectas de energia)</h3>
+        <p>El alcance 2 abarca las emisiones indirectas asociadas al consumo de energía adquirida. Estas emisiones provienen de la producción de esa energía que utilizas en tus operaciones.</p>
+
+        <h4>Consumo electricidad</h4>
+        <label for="kwh-electricidad">¿Cuántos kWh de electricidad consume la empresa mensualmente?</label>
+        <input type="number" id="kwh-electricidad" min="0" placeholder="Ingrese cantidad"/>
+        <label for="porcentaje-energiaren">¿Cuánto de este porcentaje es de energía renovable?</label>
+        <input type="number" id="porcentaje-energiaren" min="0" placeholder="Ingrese cantidad"/>
+
+        <h3 style="color: red;">Alcance 3 (Otras emisones indirectas)</h3>
+        <p>El alcance 3 incluye otras emisiones indirectas a lo largo de tu cadena de valor, como
+            transporte de productos, viajes de negocios, o el uso y disposición de tus productos. Estas
+            emisiones son clave para entender mejor tu impacto.</p>
+
+        <h4>Desplazamientos aéreos</h4>
+
+        <label for="km-aereos">¿Cuántos km al año se realizan en viajes de negocio en avión?</label>
+        <input type="number" id="km-aereos" min="0" placeholder="Ingrese cantidad"/>
+        <h4>Transporte de Mercancías (Logística Subcontratada)</h4>
+        <label for="tipo-transporte">Qué tipo de transporte se utiliza principalmente (seleccionar solo una opción):</label>
+        <select id="tipo-transporte">
+                <option value="diesel">Transporte diesel</option>
+                <option value="gasolina">Transporte gasolina</option>
+                <option value="gas-natural">Transporte gas natural</option>
+                <option value="tren">Tren</option>
+                <option value="barco">Barco</option>
+                <option value="avion-carga">Avión de carga</option>
+        </select>
+
+        <label for="km-año-proveedores-logísticos">¿Cuántos km al año se transportan por proveedores logísticos?</label>
+        <input type="number" id="km-año-proveedores-logísticos" min="0" placeholder="Ingrese cantidad"/>
+        <h4>Gestión de Residuos</h4>
+        <label for="cantidad-residuos">¿Cuántas toneladas de residuos se generan al año?</label>
+        <input type="number" id="cantidad-residuos" min="0" placeholder="Ingrese cantidad"/>
+
+        <p>¿Qué porcentaje de esos residuos se destina a cada método de disposición?
+                                            (La suma de los porcentajes debe ser 100 %)</p>
+        <label for="porcentaje-vertedero">Vertedero:</label>
+        <input type="number" id="porcentaje-vertedero" min="0" placeholder="Ingrese cantidad"/>
+        <label for="porcentaje-incineracion">Incineración:</label>
+        <input type="number" id="porcentaje-incineracion" min="0" placeholder="Ingrese cantidad"/>
+        <label for="porcentaje-compostaje">Compostaje:</label>
+        <input type="number" id="porcentaje-compostaje" min="0" placeholder="Ingrese cantidad"/>
+        <label for="porcentaje-reciclaje">Reciclaje:</label>
+        <input type="number" id="porcentaje-reciclaje" min="0" placeholder="Ingrese cantidad"/>
+
+
+
+        <button onclick="calcularHuellaEmpresa()">Calcular Huella Empresarial</button>
+        <p id="resultado-empresa"></p> 
+        <p id="resultado-arboles"></p>
+
+        <canvas id="myChart" style="max-width: 100%; max-height: 400px; display: block; box-sizing: border-box; height: 200px;" _mstvisible="2" width="500" height="250"></canvas>
+
+        <div id="info-huella" style="display: none">  
+            <p>Medir y compensar tu huella es un paso importante hacia la sostenibilidad. Conoce nuestros
+                proyectos que protegen ecosistemas clave y apoyan comunidades locales y contáctate con
+                nosotros para cotizar la medición de tu huella y comenzar a reducir tu impacto.</p>            
+            <a href="https://biofix.co/contact/" target="_blank id="reducir-impacto">Contactate con nosotros.</a>
+            </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
